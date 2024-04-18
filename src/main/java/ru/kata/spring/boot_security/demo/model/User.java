@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
+import ru.kata.spring.boot_security.demo.model.Role;
 import java.util.Set;
 
 @Entity
@@ -20,6 +20,12 @@ public class User implements UserDetails {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "pass")
+    private String pass;
+
+    @Transient
+    private String passwordConfirm;
 
     @Column(name = "lastname")
     private String lastname;
@@ -53,6 +59,18 @@ public class User implements UserDetails {
         this.name = name;
     }
 
+    public String getPass() {
+        return name;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public String getPasswordConfirm() {return passwordConfirm;}
+
+    public void setPasswordConfirm(String passwordConfirm) {this.passwordConfirm = passwordConfirm;}
+
     public String getLastname() {
         return lastname;
     }
@@ -77,8 +95,17 @@ public class User implements UserDetails {
         this.gender = gender;
     }
 
-    public User(String name, String lastname, int age, String gender, Set<Role> roles) {
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public User(String name, String pass, String lastname, int age, String gender, Set<Role> roles) {
         this.name = name;
+        this.pass = pass;
         this.lastname = lastname;
         this.age = age;
         this.gender = gender;
@@ -97,12 +124,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return getRoles();
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return pass;
     }
 
     @Override
@@ -112,21 +139,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
