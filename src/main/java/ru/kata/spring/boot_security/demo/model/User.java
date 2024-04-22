@@ -1,159 +1,167 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
+import com.sun.istack.NotNull;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import ru.kata.spring.boot_security.demo.model.Role;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@Entity
 @Table(name = "users")
+@Entity
 public class User implements UserDetails {
-
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(unique = true)
+    private String username;
 
-    @Column(name = "pass")
-    private String pass;
+    @NotNull
+    private String password;
 
-    @Transient
-    private String passwordConfirm;
+    @Column(unique = true)
+    private String email;
 
-    @Column(name = "lastname")
-    private String lastname;
 
-    @Column(name = "age")
+    private String firstName;
+
+
+    private String lastName;
+
+
     private int age;
 
-    @Column(name = "gender")
-    private String gender;
 
-    @Column(name = "role")
-    private Set<Role> roles;
+    private String country;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @NotNull
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
+    }
 
+
+    public User(String username, String email, String firstName, String lastName, int age, String country, Set<Role> roles) {
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.country = country;
+        this.roles = roles;
     }
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
-    public String getName() {
-        return name;
+    @Override
+    public String getUsername() {
+        return username;
     }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
-
-    public String getPass() {
-        return name;
+    @Override
+    public String getPassword() {
+        return password;
     }
-
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
     }
-
-    public String getPasswordConfirm() {return passwordConfirm;}
-
-    public void setPasswordConfirm(String passwordConfirm) {this.passwordConfirm = passwordConfirm;}
-
-    public String getLastname() {
-        return lastname;
+    public String getEmail() {
+        return email;
     }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setEmail(String email) {
+        this.email = email;
     }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public Set<Role> getRoles() {
         return roles;
     }
-
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
-    public User(String name, String pass, String lastname, int age, String gender, Set<Role> roles) {
-        this.name = name;
-        this.pass = pass;
-        this.lastname = lastname;
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public int getAge() {
+        return age;
+    }
+    public void setAge(int age) {
         this.age = age;
-        this.gender = gender;
-        this.roles = roles;
     }
-
-    @Override
-    public String toString() {
-        return "Пользователь: " +
-                "№: " + id +
-                ", Имя: " + name +
-                ", Фамилия: " + lastname +
-                ", Возраст: " + age +
-                ", Пол: " + gender;
+    public String getCountry() {
+        return country;
     }
-
+    public void setCountry(String country) {
+        this.country = country;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRolename()))
+                .collect(Collectors.toList());
     }
-
-    @Override
-    public String getPassword() {
-        return pass;
-    }
-
-    @Override
-    public String getUsername() {
-        return name;
-    }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && age == user.age && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(country, user.country) && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, email, firstName, lastName, age, country, roles);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", country='" + country + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

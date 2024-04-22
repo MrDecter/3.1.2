@@ -2,17 +2,20 @@ package ru.kata.spring.boot_security.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.util.List;
+import javax.security.sasl.AuthenticationException;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
-
 	private final UserService userService;
 
 	@Autowired
@@ -20,47 +23,13 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping( "/index")
-	public String allUsers(Model model) {
-		List<User> usersList = userService.getUsers();
-		model.addAttribute("users", usersList);
-		return "index";
-	}
-
-	@GetMapping( "/user")
-	public String roleUser(Model model) {
-		List<User> usersList = userService.getUsers();
-		model.addAttribute("users", usersList);
-		return "user";
-	}
-
-
-	@GetMapping("/add")
-	public String createUserForm(@ModelAttribute("user") User user) {
-		return "add";
-	}
-
-	@PostMapping("/addUser")
-	public String addUser(@ModelAttribute("user") User user) {
-		userService.addUser(user);
-		return "redirect:/";
-	}
-
-	@GetMapping("/deleteUser")
-	public String removeUser(@RequestParam("id") int id) {
-		userService.deleteUser(id);
-		return "redirect:/";
-	}
-
-	@GetMapping("/edit")
-	public String getEditUserForm(Model model, @RequestParam("id") int id) {
+	@GetMapping("{id}")
+	String getUser (@PathVariable("id") int id, Model model) throws AuthenticationException {
+		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (currentUser.getRoles().stream().allMatch(r-> r.getRolename().equals("ROLE_USER")) && !(currentUser.getId() == id)){
+			throw new AuthenticationException("Ошибка аутентификации");
+		}
 		model.addAttribute("user", userService.getUser(id));
-		return "edit";
-	}
-
-	@PostMapping("/updateUser")
-	public String updateUser(@ModelAttribute("user") User user) {
-		userService.updateUser(user);
-		return "redirect:/";
+		return "/users/show_user";
 	}
 }

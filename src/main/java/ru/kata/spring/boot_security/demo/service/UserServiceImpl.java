@@ -1,77 +1,92 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.kata.spring.boot_security.demo.model.Role;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
-
-
-import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
-public class UserServiceImpl implements UserDetailsService {
-
-    @Autowired
-    EntityManager entityManager;
-
+@Transactional(readOnly = true)
+public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
 
-    public UserServiceImpl() {
-
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public boolean addUser(User user) {
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByUsername(username);
 
-        User userFromDB = userRepository.findByUsername(user.getUsername());
-
-        if (userFromDB != null) {
-            return false;
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("Пользователь не найден");
         }
-
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-        userRepository.save(user);
-        return true;
+        return user.get();
     }
 
-    public void updateUser(User user) {
-        entityManager.merge(user);
+    public User findUserById(int userId) {
+        Optional<User> userFromDb = userRepository.findById(userId);
+        return userFromDb.orElse(new User());
+    }
+    public List<User> allUsers() {
+        return userRepository.findAll();
     }
 
-    public boolean deleteUser(int id) {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
+    public boolean deleteUser(int userId) {
+        if (userRepository.findById(userId).isPresent()) {
+            userRepository.deleteById(userId);
             return true;
         }
         return false;
     }
 
-    public User getUser(int id) {
-        return entityManager.find(User.class, id);
-    }
-
-    public List<User> getUsers() {
+    @Override
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("Пользователь не найден!");
-        }
-
-        return user;
+    public User getUser(int id) {
+        return userRepository.findById(id).get();
     }
+
+    @Transactional
+    @Override
+    public void save(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public void update(User updatedUser) {
+        updatedUser.setPassword(bCryptPasswordEncoder.encode(updatedUser.getPassword()));
+        userRepository.save(updatedUser);
+    }
+
+    @Transactional
+    @Override
+    public void delete(int id) {
+        userRepository.deleteById(id);
+    }
+
 }

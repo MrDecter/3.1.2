@@ -8,8 +8,15 @@
     <title>Все пользователи</title>
 </head>
 <body>
-
-<a href="/users">Войти</a>
-
+<div th:each="user : ${users}">
+    <a th:href="@{/admin/user/{id}(id=${user.getId()})}" th:text="${user.getUsername()}">user</a>
+</div>
+<br/>
+<hr/>
+<a href="/admin/new">Create new user</a>
+<br/>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout">
+</form>
 </body>
 </html>

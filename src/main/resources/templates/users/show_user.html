@@ -8,8 +8,15 @@
     <title>Все пользователи</title>
 </head>
 <body>
+<p th:text="${user.getId()}">VALUE</p>
+<p th:text="${user.getFirstName()}">VALUE</p>
+<p th:text="${user.getLastName()}">VALUE</p>
+<p th:text="${user.getAge()}">VALUE</p>
+<p th:text="${user.getCountry()}">VALUE</p>
 
-<a href="/users">Войти</a>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout">
+</form>
 
 </body>
 </html>
