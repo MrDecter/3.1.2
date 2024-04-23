@@ -16,7 +16,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String rolename;
+    public String rolename;
 
     @Transient
     @ManyToMany(mappedBy = "roles")
@@ -74,5 +74,10 @@ public class Role implements GrantedAuthority {
     @Override
     public int hashCode() {
         return Objects.hash(id, rolename, users);
+    }
+
+    @Override
+    public String toString() {
+        return rolename;
     }
 }

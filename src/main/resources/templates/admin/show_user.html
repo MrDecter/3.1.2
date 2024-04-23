@@ -6,11 +6,27 @@
     <title th:text="${user.getId()}">Пользователь</title>
 </head>
 <body>
-<p th:text="${user.getId()}">VALUE</p>
-<p th:text="${user.getFirstName()}">VALUE</p>
-<p th:text="${user.getLastName()}">VALUE</p>
-<p th:text="${user.getAge()}">VALUE</p>
-<p th:text="${user.getCountry()}">VALUE</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">ИМЯ</th>
+        <th scope="col">ФАМИЛИЯ</th>
+        <th scope="col">ВОЗРАСТ</th>
+        <th scope="col">ГОРОД</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th><p th:text="${user.getId()}">VALUE</p></th>
+        <td><p th:text="${user.getFirstName()}">VALUE</p></td>
+        <td><p th:text="${user.getLastName()}">VALUE</p></td>
+        <td><p th:text="${user.getAge()}">VALUE</p></td>
+        <td><p th:text="${user.getCountry()}">VALUE</p></td>
+    </tr>
+
+    </tbody>
+</table>
 
 <a th:href="@{/admin/user/{id}/edit(id=${user.getId()})}">Edit</a>
 

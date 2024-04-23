@@ -36,7 +36,7 @@
     <br/>
     <label for="role"> Установите роль</label>
     <select id="role" th:field="*{roles}" multiple>
-        <option th:each="role:${roles}" th:value="${{role}}" th:text="${role.getRoles()}"/>
+        <option th:each="role:${roles}" th:value="${{role}}" th:text="${role.rolename}"/>
     </select>
     <br/>
 

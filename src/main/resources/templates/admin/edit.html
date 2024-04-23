@@ -8,37 +8,49 @@
     <title>Изменить пользователя</title>
 </head>
 <body>
-<form th:method="PATCH" th:action="@{/admin/user/{id}(id=${user.getId()})}" th:object="${user}">
-    <label for="firstName" > Введите имя:</label>
-    <input type="text" th:field="*{firstName}" id="firstName">
-    <div style="color: darkolivegreen" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name error</div>
-    <br/>
-    <label for="lastName" > Введите фамилию:</label>
-    <input type="text" th:field="*{lastName}" id="lastName">
-    <div style="color: darkolivegreen" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name error</div>
-    <br/>
-    <label for="age" > Введите возраст:</label>
-    <input type="text" th:field="*{age}" id="age">
-    <div style="color: darkolivegreen" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
-    <br/>
-    <label for="country" > Введите страну:</label>
-    <input type="text" th:field="*{country}" id="country">
-    <div style="color: darkolivegreen" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">Country error</div>
-    <br/>
-    <label for="username" > Введите логин:</label>
-    <input type="text" th:field="*{username}" id="username">
-    <div style="color: darkolivegreen" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</div>
-    <br/>
-    <label for="password" > Введите пароль:</label>
-    <input type="password" th:field="*{password}" id="password">
-    <div style="color: darkolivegreen" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</div>
-    <br/>
-    <label for="role"> Выберите роль</label>
-    <select id="role" th:field="*{roles}" multiple>
-        <option th:each="role:${roles}" th:value="${{role}}" th:text="${role.rolename}"/>
-    </select>
-    <br/>
-    <input type="submit" value="Edit">
+<form th:method="POST" th:action="@{/admin/user/{id}(id=${user.getId()})}" th:object="${user}">
+    <div class="mb-3">
+        <label for="firstName" class="form-label">Имя: </label>
+        <input type="text" th:field="*{firstName}" class="form-control" id="firstName" >
+        <div style="color: darkolivegreen" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name error</div>
+    </div>
+    <div class="mb-3">
+        <label for="lastName" class="form-label"> Введите фамилию: </label>
+        <input type="text" th:field="*{lastName}" class="form-control" id="lastName">
+        <div style="color: darkolivegreen" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name error</div>
+    </div>
+    <div class="mb-3">
+        <label for="age" class="form-label"> Введите возраст: </label>
+        <input type="text" th:field="*{age}" class="form-control" id="age">
+        <div style="color: darkolivegreen" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
+    </div>
+    <div class="mb-3">
+        <label for="country" class="form-label"> Введите страну: </label>
+        <input type="text" th:field="*{country}" class="form-control" id="country">
+        <div style="color: darkolivegreen" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">Country error</div>
+    </div>
+    <div class="mb-3">
+        <label for="username" class="form-label"> Введите логин: </label>
+        <input type="text" th:field="*{username}" class="form-control" id="username">
+        <div style="color: darkolivegreen" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</div>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label"> Введите пароль: </label>
+        <input type="password" th:field="*{password}" class="form-control" id="password">
+        <div style="color: darkolivegreen" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</div>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label"> Введите почту: </label>
+        <input type="text" th:field="*{email}" class="form-control" id="email">
+        <div style="color: darkolivegreen" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">password error</div>
+    </div>
+    <div class="mb-3">
+        <label for="role" class="form-label">Установленные права: </label>
+        <select id="role" th:field="*{roles}" class="form-control" >
+            <option th:each="role:${roles}" th:value="${role}" th:text="${user.getRoles()}"/>
+        </select>
+    </div>
+    <input type="submit" value="Edit" class="btn btn-primary">
 </form>
 </body>
 </html>
