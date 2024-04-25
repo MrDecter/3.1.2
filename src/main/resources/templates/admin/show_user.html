@@ -13,7 +13,7 @@
         <th scope="col">ИМЯ</th>
         <th scope="col">ФАМИЛИЯ</th>
         <th scope="col">ВОЗРАСТ</th>
-        <th scope="col">ГОРОД</th>
+        <th scope="col">ПОЧТА</th>
     </tr>
     </thead>
     <tbody>
@@ -22,7 +22,7 @@
         <td><p th:text="${user.getFirstName()}">VALUE</p></td>
         <td><p th:text="${user.getLastName()}">VALUE</p></td>
         <td><p th:text="${user.getAge()}">VALUE</p></td>
-        <td><p th:text="${user.getCountry()}">VALUE</p></td>
+        <td><p th:text="${user.getEmail()}">VALUE</p></td>
     </tr>
 
     </tbody>
@@ -30,7 +30,7 @@
 
 <a th:href="@{/admin/user/{id}/edit(id=${user.getId()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/admin/user/{id}(id=${user.getId()})}">
+<form th:method="GET" th:action="@{/admin/user/{id}/delete (id=${user.getId()})}">
     <input type="submit" value="Delete">
 </form>
 <form th:method="POST" th:action="@{/logout}">

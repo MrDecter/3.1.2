@@ -39,7 +39,7 @@ public class AdminController {
         model.addAttribute("user", usersService.getUser(id));
         return "admin/show_user";
     }
-    @PostMapping
+    @PostMapping(value = "/new")
     public String createUser(@ModelAttribute("user") User user, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {return "admin/new";}
         usersService.save(user);
@@ -57,7 +57,7 @@ public class AdminController {
         usersService.update(user);
         return "redirect:/admin";
     }
-    @DeleteMapping("/user/{id}")
+    @GetMapping("/user/{id}/delete")
     public String delete(@PathVariable("id") int id){
         usersService.delete(id);
         return "redirect:/admin";

@@ -24,11 +24,7 @@
         <input type="text" th:field="*{age}" class="form-control" id="age">
         <div style="color: darkolivegreen" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
     </div>
-    <div class="mb-3">
-        <label for="country" class="form-label"> Введите страну: </label>
-        <input type="text" th:field="*{country}" class="form-control" id="country">
-        <div style="color: darkolivegreen" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">Country error</div>
-    </div>
+
     <div class="mb-3">
         <label for="username" class="form-label"> Введите логин: </label>
         <input type="text" th:field="*{username}" class="form-control" id="username">
@@ -47,7 +43,7 @@
     <div class="mb-3">
         <label for="role" class="form-label">Установленные права: </label>
         <select id="role" th:field="*{roles}" class="form-control" >
-            <option th:each="role:${roles}" th:value="${role}" th:text="${user.getRoles()}"/>
+            <option th:each="role:${roles}" th:value="${role.id}" th:text="${role.rolename}"/>
         </select>
     </div>
     <input type="submit" value="Edit" class="btn btn-primary">

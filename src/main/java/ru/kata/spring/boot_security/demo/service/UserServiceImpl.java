@@ -43,22 +43,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user.get();
     }
 
-    public User findUserById(int userId) {
-        Optional<User> userFromDb = userRepository.findById(userId);
-        return userFromDb.orElse(new User());
-    }
-    public List<User> allUsers() {
-        return userRepository.findAll();
-    }
-
-    public boolean deleteUser(int userId) {
-        if (userRepository.findById(userId).isPresent()) {
-            userRepository.deleteById(userId);
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
