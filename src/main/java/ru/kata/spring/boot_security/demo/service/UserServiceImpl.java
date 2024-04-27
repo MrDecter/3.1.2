@@ -1,8 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,12 +33,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
-
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("Пользователь не найден");
-        }
-        return user.get();
+        User user = userRepository.findByUsername(username);
+        return user;
     }
 
     @Override
@@ -51,6 +45,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUser(int id) {
         return userRepository.findById(id).get();
+    }
+    @Override
+    public User findByUsername(String name) {
+        return userRepository.findByUsername(name);
     }
 
     @Transactional
@@ -72,5 +70,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void delete(int id) {
         userRepository.deleteById(id);
     }
+
 
 }
