@@ -6,7 +6,7 @@ $(async function () {
 async function allUsers() {
     const table = $('#bodyAllUserTable');
     table.empty()
-    fetch("http://localhost:8080/admin/api")
+    fetch("http://localhost:8080/api/admin")
         .then(r => r.json())
         .then(data => {
             data.forEach(user => {
@@ -14,9 +14,9 @@ async function allUsers() {
                         <tr>
                             <td>${user.id}</td>
                             <td>${user.username}</td>
-                            <td>${user.lastname}</td>
+                            <td>${user.lastName}</td>
                             <td>${user.age}</td>
-                            <td>${user.roles.map(role => " " + role.roles)}</td>
+                            <td>${user.roles.map(role => " " + role.rolename)}</td>
                             <td>
                                 <button type="button" class="btn btn-info" data-toggle="modal" id="buttonEdit" data-action="edit" data-id="${user.id}" data-target="#edit">Edit</button>
                             </td>
