@@ -13,6 +13,7 @@ $(async function () {
         editModal.show();
     });
 
+
     $(document).on('click', '#buttonDelete', function () {
         const userId = $(this).data('id');
         console.log("ID пользователя:", userId);
@@ -198,12 +199,14 @@ function editCurrentUser() {
 }
 
 async function viewEditModal(id) {
+    console.log("Полученое id:", id);
     let userEdit = await getUser(id);
     let form = document.forms["formEditUser"];
     form.id.value = userEdit.id;
-    form.username.value = userEdit.username;
-    form.lastname.value = userEdit.lastname;
+    form.firstName.value = userEdit.firstName;
+    form.lastName.value = userEdit.lastName;
     form.age.value = userEdit.age;
+    form.email.value = userEdit.email;
     $('#editUserRole').empty();
     await fetch("api/admin/roles")
         .then(r => r.json())
@@ -220,11 +223,12 @@ async function viewEditModal(id) {
                 element.text = role.rolename;
                 element.value = role.id;
                 if (selectedRole) element.selected = true;
-                $('#editRolesUser')[0].appendChild(element);
+                $('#editUserRole')[0].appendChild(element);
             })
         })
         .catch((error) => {
             alert(error);
         })
 }
+
 
