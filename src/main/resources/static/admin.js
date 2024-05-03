@@ -8,7 +8,6 @@ $(async function () {
 
     $(document).on('click', '#buttonEdit', function () {
         const userId = $(this).data('id');
-        console.log("ID пользователя:", userId);
         viewEditModal(userId);
         editModal.show();
     });
@@ -101,30 +100,6 @@ async function newUser() {
 
 }
 
-
-function deleteUser() {
-    const deleteForm = document.forms["formDeleteUser"];
-    deleteForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        fetch("api/admin/removeUser/" + deleteForm.id.value, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(() => {
-                $('#deleteFormCloseButton').click();
-                allUsers();
-            })
-            .catch((error) => {
-                alert(error);
-            });
-    })
-}
-
-
-
-
 async function viewDeleteModal(id) {
     let userDelete = await getUser(id);
     let formDelete = document.forms["formDeleteUser"];
@@ -143,6 +118,7 @@ async function viewDeleteModal(id) {
                         selectedRole = true;
                         break;
                     }
+                    console.log(selectedRole)
                 }
                 let element = document.createElement("option");
                 element.text = role.rolename;
@@ -199,7 +175,6 @@ function editCurrentUser() {
 }
 
 async function viewEditModal(id) {
-    console.log("Полученое id:", id);
     let userEdit = await getUser(id);
     let form = document.forms["formEditUser"];
     form.id.value = userEdit.id;
@@ -230,5 +205,22 @@ async function viewEditModal(id) {
             alert(error);
         })
 }
-
-
+function deleteUser() {
+    const deleteForm = document.forms["formDeleteUser"];
+    deleteForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        fetch("api/admin/removeUser/" + deleteForm.id.value, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(() => {
+                $('#deleteFormCloseButton').click();
+                allUsers();
+            })
+            .catch((error) => {
+                alert(error);
+            });
+    })
+}
