@@ -123,56 +123,6 @@
             </div>
         </div>
     </div>
-    <!--Модальное: Изменение-->
-    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editUserModalLabel">Edit user</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formEditUser">
-                        <div class="mb-3">
-                            <label for="editUserId" class="col-form-label">ID:</label>
-                            <input type="text" class="form-control" id="editUserId" name="id">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUserFirstName" class="col-form-label">First name:</label>
-                            <input type="text" class="form-control" id="editUserFirstName" name="firstName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUserLastName" class="col-form-label">Last name:</label>
-                            <input type="text" class="form-control" id="editUserLastName" name="lastName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUserAge" class="col-form-label">Age:</label>
-                            <input type="number" class="form-control" id="editUserAge" name="age">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUserEmail" class="col-form-label">Email:</label>
-                            <input type="email" class="form-control" id="editUserEmail" name="email">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUserPassword" class="col-form-label">Password:</label>
-                            <input type="password" class="form-control" id="editUserPassword" name="password">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUserRole" class="col-form-label">Role:</label>
-                            <select class="form-select" id="editUserRole" multiple>
-                                <option value="USER">USER</option>
-                                <option value="ADMIN">ADMIN</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="editUserSaveButton">Edit</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <!--Модальное: Удаление-->
 <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -217,6 +167,60 @@
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+<!--Модальное: Изменение-->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditUser">
+                    <div class="mb-3">
+                        <label for="editUserId" class="col-form-label">ID:</label>
+                        <input type="text" class="form-control" id="editUserId" name="id" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserFirstName" class="col-form-label">Username:</label>
+                        <input type="text" class="form-control" id="editUserUsername" name="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserFirstName" class="col-form-label">First name:</label>
+                        <input type="text" class="form-control" id="editUserFirstName" name="firstName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserLastName" class="col-form-label">Last name:</label>
+                        <input type="text" class="form-control" id="editUserLastName" name="lastName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserAge" class="col-form-label">Age:</label>
+                        <input type="number" class="form-control" id="editUserAge" name="age">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserEmail" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="editUserEmail" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserPassword" class="col-form-label">Password:</label>
+                        <input type="password" class="form-control" id="editUserPassword" name="password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUserRole" class="col-form-label">Role:</label>
+                        <select class="form-select" id="editUserRole" multiple name="roles">
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="editUserSaveButton">Edit</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

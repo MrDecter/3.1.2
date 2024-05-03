@@ -8,6 +8,7 @@ $(async function () {
 
     $(document).on('click', '#buttonEdit', function () {
         const userId = $(this).data('id');
+        console.log("Открытие модального окна юзера:", userId);
         viewEditModal(userId);
         editModal.show();
     });
@@ -19,9 +20,10 @@ $(async function () {
         viewDeleteModal(userId);
         deleteModal.show();
     });
+
+
 });
 
-// ... (остальной код без изменений)
 
 async function allUsers() {
     const table = $('#bodyAllUserTable');
@@ -141,16 +143,16 @@ async function getUser(id) {
 function editCurrentUser() {
     const editForm = document.forms["formEditUser"];
     editForm.addEventListener("submit", function (event) {
+        console.log("Нажатие на кнопку изменений")
         event.preventDefault();
         let editUserRoles = [];
         for (let i = 0; i < editForm.roles.options.length; i++) {
             if (editForm.roles.options[i].selected) editUserRoles.push({
                 id: editForm.roles.options[i].value,
                 name: editForm.roles.options[i].name,
-
             })
         }
-
+        console.log("Отправка формы")
         fetch("api/admin/addOrUpdate/" + editForm.id.value, {
             method: 'PUT',
             headers: {
@@ -159,9 +161,11 @@ function editCurrentUser() {
             body: JSON.stringify({
                 id: editForm.id.value,
                 username: editForm.username.value,
-                password: editForm.password.value,
-                lastname:  editForm.lastName.value,
+                firstName: editForm.firstName.value,
+                lastName: editForm.lastName.value,
                 age: editForm.age.value,
+                email: editForm.email.value,
+                password: editForm.password.value,
                 roles: editUserRoles
             })
         }).then(() => {
@@ -178,10 +182,12 @@ async function viewEditModal(id) {
     let userEdit = await getUser(id);
     let form = document.forms["formEditUser"];
     form.id.value = userEdit.id;
+    form.username.value = userEdit.username;
     form.firstName.value = userEdit.firstName;
     form.lastName.value = userEdit.lastName;
     form.age.value = userEdit.age;
     form.email.value = userEdit.email;
+    form.password.value = userEdit.password;
     $('#editUserRole').empty();
     await fetch("api/admin/roles")
         .then(r => r.json())
@@ -189,7 +195,7 @@ async function viewEditModal(id) {
             roles.forEach(role => {
                 let selectedRole = false;
                 for (let i = 0; i < userEdit.roles.length; i++) {
-                    if (userEdit.roles[i].name === role.name) {
+                    if (userEdit.roles[i].rolename === role.rolename) {
                         selectedRole = true;
                         break;
                     }

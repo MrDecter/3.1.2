@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -37,7 +38,7 @@ public class ApiController {
     }
 
     @PutMapping("/addOrUpdate/{id}")
-    public ResponseEntity<HttpStatus> add(@PathVariable("id") int id, @RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> add(@PathVariable("id") int id, @RequestBody @Validated User user, BindingResult bindingResult) {
         String pas = getUserById(id).getPassword();
         user.setId(id);
         userService.update(user);
