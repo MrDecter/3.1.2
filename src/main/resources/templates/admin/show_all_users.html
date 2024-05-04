@@ -29,7 +29,10 @@
                 </ul>
                 <ul class="navbar-nav ml-auto position-absolute top-0 end-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Выйти из профиля</a>
+                        <a class="nav-link" href="#" onclick="document.getElementById('secretKey').submit();">Выйти из профиля</a>
+                        <form action="/exit" method="post" id="secretKey" style="display: none;">
+                            <input type="hidden" name="key1" value="value1"/>
+                        </form>
                     </li>
                 </ul>
             </div>
