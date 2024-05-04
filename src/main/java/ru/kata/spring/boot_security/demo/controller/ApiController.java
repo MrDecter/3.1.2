@@ -32,7 +32,7 @@ public class ApiController {
     }
 
     @PostMapping("/addUser")
-    public ResponseEntity<HttpStatus> addUserView(@RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> addUserView(@RequestBody @Validated User user, BindingResult bindingResult) {
         userService.save(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -69,8 +69,9 @@ public class ApiController {
     }
 
     @GetMapping("/roles")
-    public List<Role> getAllRoles() {
-        return roleService.getAll();
+    public ResponseEntity<List<Role>> getAllRoles() {
+        List<Role> roles = roleService.getAll();
+        return ResponseEntity.ok().body(roles);
     }
 
 }

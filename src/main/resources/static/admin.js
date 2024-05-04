@@ -1,5 +1,6 @@
 $(async function () {
     await allUsers();
+    await newUser();
     deleteUser();
     editCurrentUser();
 
@@ -21,9 +22,33 @@ $(async function () {
         deleteModal.show();
     });
 
+    const links = document.querySelectorAll(".nav-link");
+    const alluser = document.getElementById("alluser");
+    const adduser = document.getElementById("adduser");
+
+    links.forEach(link => {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            // Удаление класса "active" у всех ссылок
+            links.forEach(l => l.classList.remove("active"));
+
+            // Добавление класса "active" к нажатой ссылке
+            this.classList.add("active");
+
+            // Скрытие/показа блоков
+            if (this.id === "usertable") {
+                alluser.style.display = "block";
+                adduser.style.display = "none";
+            } else if (this.id === "newuser") {
+                alluser.style.display = "none";
+                adduser.style.display = "block";
+            }
+        });
+    });
+
 
 });
-
 
 async function allUsers() {
     const table = $('#bodyAllUserTable');
@@ -63,9 +88,7 @@ async function newUser() {
                 $('#rolesNewUser')[0].appendChild(element);
             })
         })
-
     const formAddNewUser = document.forms["formAddNewUser"];
-
     formAddNewUser.addEventListener('submit', function (event) {
         event.preventDefault();
         let rolesNewUser = [];
@@ -75,9 +98,6 @@ async function newUser() {
                 name: formAddNewUser.roles.options[i].name
             })
         }
-
-
-
         fetch("http://localhost:8080/api/admin/addUser", {
             method: 'POST',
             headers: {
@@ -85,9 +105,11 @@ async function newUser() {
             },
             body: JSON.stringify({
                 username: formAddNewUser.username.value,
-                lastname: formAddNewUser.lastname.value,
-                age: formAddNewUser.age.value,
+                firstName: formAddNewUser.firstName.value,
+                lastName: formAddNewUser.lastName.value,
+                email: formAddNewUser.email.value,
                 password: formAddNewUser.password.value,
+                age: formAddNewUser.age.value,
                 roles: rolesNewUser
             })
         }).then(() => {
