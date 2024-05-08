@@ -1,13 +1,10 @@
 package ru.kata.spring.boot_security.demo.model;
 
-
-
 import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 
 @Entity
 @Table(name = "roles")

@@ -13,17 +13,24 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 @Entity
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(unique = true)
     private String username;
+
     @NotNull
     private String password;
+
     @Column(unique = true)
     private String email;
+
     private String firstName;
+
     private String lastName;
+
     private int age;
 
     @ManyToMany(fetch = FetchType.LAZY)

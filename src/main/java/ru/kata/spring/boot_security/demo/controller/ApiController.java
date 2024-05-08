@@ -1,7 +1,5 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -11,13 +9,12 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
 public class ApiController {
-    private static final Logger log = LoggerFactory.getLogger(ApiController.class);
+
     private final RoleService roleService;
     private final UserService userService;
 
@@ -42,23 +39,20 @@ public class ApiController {
         String pas = getUserById(id).getPassword();
         user.setId(id);
         userService.update(user);
-        if(user.getPassword().isEmpty()){
+        if(user.getPassword().isEmpty()) {
             user.setPassword(pas);
             user.setId(id);
             userService.update(user);
             return ResponseEntity.ok(HttpStatus.OK);
         }
-        else{
+        else {
             userService.save(user);
         }
-
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-
     @DeleteMapping("/removeUser/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") int id) {
-        log.info("deleteUser: {}", id);
         userService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
